@@ -893,59 +893,68 @@ h2.section-title {
 .reviews-source a:hover { color: var(--navy-900); }
 
 .reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  position: relative;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.reviews-track-wrapper {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.reviews-track {
+  display: flex;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 .review-card {
+  flex: 0 0 100%;
   background: var(--white);
-  padding: 36px 32px;
-  border-radius: 4px;
+  padding: 48px 52px;
   border: 1px solid var(--steel-200);
   position: relative;
-  transition: all 0.3s ease;
-}
-
-.review-card:hover {
-  border-color: var(--navy-600);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-sizing: border-box;
 }
 
 .review-quote-mark {
   font-family: 'Archivo';
-  font-size: 4rem;
+  font-size: 5rem;
   line-height: 1;
   color: var(--navy-50);
   position: absolute;
-  top: 20px;
-  right: 28px;
+  top: 28px;
+  right: 36px;
   font-weight: 900;
+  z-index: 0;
 }
 
 .review-stars {
   display: flex;
-  gap: 2px;
+  gap: 3px;
   color: #f7a72a;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 1;
 }
 
-.review-stars svg { width: 16px; height: 16px; }
+.review-stars svg { width: 18px; height: 18px; }
 
 .review-text {
   color: var(--ink);
-  font-size: 1rem;
-  line-height: 1.65;
-  margin-bottom: 24px;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  margin-bottom: 28px;
   position: relative;
   z-index: 1;
+  min-height: 95px;
 }
 
 .review-author {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--navy-900);
 }
 
@@ -957,8 +966,64 @@ h2.section-title {
   letter-spacing: 0.08em;
 }
 
-@media (max-width: 800px) {
-  .reviews-grid { grid-template-columns: 1fr; }
+.reviews-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.reviews-arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--steel-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--navy-800);
+  transition: all 0.25s ease;
+  padding: 0;
+}
+
+.reviews-arrow:hover {
+  background: var(--navy-800);
+  color: var(--white);
+  border-color: var(--navy-800);
+  transform: translateY(-1px);
+}
+
+.reviews-arrow svg { width: 18px; height: 18px; }
+
+.reviews-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.reviews-dot {
+  width: 28px;
+  height: 3px;
+  background: var(--steel-300);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s ease;
+  border-radius: 0;
+}
+
+.reviews-dot.active {
+  background: var(--navy-800);
+  width: 44px;
+}
+
+@media (max-width: 600px) {
+  .review-card { padding: 36px 28px; }
+  .review-text { font-size: 1rem; min-height: 130px; }
+  .review-quote-mark { font-size: 3.5rem; top: 18px; right: 24px; }
 }
 
 /* ========== CONTACT ========== */
@@ -1766,33 +1831,82 @@ h2.section-title {
       </div>
     </div>
 
-    <div class="reviews-grid">
-      <div class="review-card reveal">
-        <div class="review-quote-mark">"</div>
-        <div class="review-stars">
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <div class="reviews-grid reveal">
+      <div class="reviews-track-wrapper">
+        <div class="reviews-track" id="reviewsTrack">
+
+          <div class="review-card">
+            <div class="review-quote-mark">"</div>
+            <div class="review-stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="review-text">Excellent work from start to finish. Turned up when they said they would, kept the place tidy, and the new roof looks fantastic. Couldn't recommend them more highly.</p>
+            <div class="review-author">Facebook Reviewer</div>
+            <div class="review-meta">Verified Review</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-quote-mark">"</div>
+            <div class="review-stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="review-text">Honest, fair price and a great job done. Sorted out a leak that two other firms had failed to fix properly. Will definitely use again.</p>
+            <div class="review-author">Facebook Reviewer</div>
+            <div class="review-meta">Verified Review</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-quote-mark">"</div>
+            <div class="review-stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="review-text">Professional from the first phone call to the final invoice. Clear quote, no nasty surprises, and the workmanship is top quality. Highly recommend.</p>
+            <div class="review-author">Facebook Reviewer</div>
+            <div class="review-meta">Verified Review</div>
+          </div>
+
+          <div class="review-card">
+            <div class="review-quote-mark">"</div>
+            <div class="review-stars">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <p class="review-text">Great team of lads, very respectful and tidy throughout. Roof looks brilliant and we've had loads of compliments from the neighbours. Thank you!</p>
+            <div class="review-author">Facebook Reviewer</div>
+            <div class="review-meta">Verified Review</div>
+          </div>
+
         </div>
-        <p class="review-text">Excellent work from start to finish. Turned up when they said they would, kept the place tidy, and the new roof looks fantastic. Couldn't recommend them more highly.</p>
-        <div class="review-author">Facebook Reviewer</div>
-        <div class="review-meta">Verified Review</div>
       </div>
 
-      <div class="review-card reveal">
-        <div class="review-quote-mark">"</div>
-        <div class="review-stars">
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <div class="reviews-controls">
+        <button class="reviews-arrow" id="reviewPrev" aria-label="Previous review">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="reviews-dots" id="reviewDots">
+          <button class="reviews-dot active" data-index="0" aria-label="Review 1"></button>
+          <button class="reviews-dot" data-index="1" aria-label="Review 2"></button>
+          <button class="reviews-dot" data-index="2" aria-label="Review 3"></button>
+          <button class="reviews-dot" data-index="3" aria-label="Review 4"></button>
         </div>
-        <p class="review-text">Honest, fair price and a great job done. Sorted out a leak that two other firms had failed to fix properly. Will definitely use again.</p>
-        <div class="review-author">Facebook Reviewer</div>
-        <div class="review-meta">Verified Review</div>
+        <button class="reviews-arrow" id="reviewNext" aria-label="Next review">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
     </div>
 
@@ -2045,6 +2159,49 @@ h2.section-title {
   });
 
   startSlider();
+
+  // ===== REVIEWS SLIDER =====
+  const reviewsTrack = document.getElementById('reviewsTrack');
+  const reviewDots = document.querySelectorAll('.reviews-dot');
+  const reviewPrev = document.getElementById('reviewPrev');
+  const reviewNext = document.getElementById('reviewNext');
+  const totalReviews = reviewDots.length;
+  let currentReview = 0;
+  let reviewInterval;
+
+  function showReview(n) {
+    currentReview = (n + totalReviews) % totalReviews;
+    reviewsTrack.style.transform = `translateX(-${currentReview * 100}%)`;
+    reviewDots.forEach((d, i) => d.classList.toggle('active', i === currentReview));
+  }
+
+  function nextReview() { showReview(currentReview + 1); }
+  function prevReview() { showReview(currentReview - 1); }
+
+  function startReviewSlider() {
+    reviewInterval = setInterval(nextReview, 6500);
+  }
+
+  function resetReviewSlider() {
+    clearInterval(reviewInterval);
+    startReviewSlider();
+  }
+
+  reviewPrev.addEventListener('click', () => { prevReview(); resetReviewSlider(); });
+  reviewNext.addEventListener('click', () => { nextReview(); resetReviewSlider(); });
+
+  reviewDots.forEach((dot, i) => {
+    dot.addEventListener('click', () => { showReview(i); resetReviewSlider(); });
+  });
+
+  // Pause auto-rotate on hover
+  const reviewsWrapper = document.querySelector('.reviews-grid');
+  if (reviewsWrapper) {
+    reviewsWrapper.addEventListener('mouseenter', () => clearInterval(reviewInterval));
+    reviewsWrapper.addEventListener('mouseleave', startReviewSlider);
+  }
+
+  startReviewSlider();
 
   // ===== NAVBAR SCROLL =====
   const navbar = document.getElementById('navbar');
